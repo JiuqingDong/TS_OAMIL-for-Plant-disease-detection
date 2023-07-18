@@ -10,27 +10,44 @@
 ### Installation
 * Set up environment
 
-conda create -n TSOAMIL python=3.7
+    conda create -n TSOAMIL python=3.7
 
-conda activate TSOAMIL
+    conda activate TSOAMIL
 
-conda install pytorch==1.10.0 torchvision==0.11.0 torchaudio==0.10.0 cudatoolkit=11.3 -c pytorch -c conda-forge
+    conda install pytorch==1.10.0 torchvision==0.11.0 torchaudio==0.10.0 cudatoolkit=11.3 -c pytorch -c conda-forge
 
 * install dependecies
 
-pip install -r requirements/build.txt
+    pip install -r requirements/build.txt
 
 * install mmcv (will take a while to process)
 
-cd mmcv
-MMCV_WITH_OPS=1 pip install -e .
+    cd mmcv
+    MMCV_WITH_OPS=1 pip install -e .
 
-cd ..
-pip install -e .
+    cd ..
+    pip install -e .
 
-* Generate noisy annotations:
+* Generate noisy annotations: Please refer to files in utils/
 
-We will optimize our code and complete this documentation as soon as possible.
+  There are two version noise you can choose, random noise and real world noise(default gamma is 0.15).
+
+### dataset prepair
+
+  You can download the GWHD2021 dataset from this link: https://zenodo.org/record/5092309
+
+The original file annotation file format is '.csv'. You can transfer to a 'xml' file by using this command python ./process_gwhd/excel_to_xml.py
+
+### train
+
+  sh train.sh
+
+### test
+
+  sh test.sh
+
+#### We will optimize our code and complete this documentation as soon as possible.
+
 
 
 ## How to use this code for a customer dataset?
@@ -54,10 +71,6 @@ Important notes for adding the Control class:
 After adding a class, you need to modify the annotation files for train, val, and test sets. Inconsistent classes between training, testing, and validation can cause errors.
 When generating the PKL file, modify ./utils/coco_dataset.py to adjust the classes.
 The number of classes in mmdet.datasets.samples.coco.py and customer.py also needs to be adjusted.
-
-
-
-
 
 
 
