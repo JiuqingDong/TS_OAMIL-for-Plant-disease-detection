@@ -1,10 +1,12 @@
 # Copyright (c) Open-MMLab. All rights reserved.
+import os.path
+
 import cv2
 import numpy as np
 
 from mmcv.image import imread, imwrite
 from .color import color_val
-
+from .generate_annotation_file import generate_xml, generate_xml_2, generate_xml_3
 
 def imshow(img, win_name='', wait_time=0):
     """Show an image.
@@ -88,7 +90,7 @@ def imshow_det_bboxes(img,
                       bbox_color='green',
                       text_color='green',
                       thickness=1,
-                      font_scale=0.5,
+                      font_scale=0.8,
                       show=True,
                       win_name='',
                       wait_time=0,
@@ -130,21 +132,41 @@ def imshow_det_bboxes(img,
     bbox_color = color_val(bbox_color)
     text_color = color_val(text_color)
     img = np.ascontiguousarray(img)
+
+    object_list = []
+
     for bbox, label in zip(bboxes, labels):
         bbox_int = bbox.astype(np.int32)
         left_top = (bbox_int[0], bbox_int[1])
         right_bottom = (bbox_int[2], bbox_int[3])
-        cv2.rectangle(
-            img, left_top, right_bottom, bbox_color, thickness=thickness)
+
+        if bbox_int[0]>bbox_int[2] or bbox_int[1]>bbox_int[3]:
+            print("Bounding Error")
+            print("\nxmin{}, ymin{}, xmax{}, ymax{}".format(bbox_int[0],bbox_int[1],bbox_int[2],bbox_int[3]))
+
         label_text = class_names[
             label] if class_names is not None else f'cls {label}'
-        if len(bbox) > 4:
-            label_text += f'|{bbox[-1]:.02f}'
-        cv2.putText(img, label_text, (bbox_int[0], bbox_int[1] - 2),
-                    cv2.FONT_HERSHEY_COMPLEX, font_scale, text_color)
+        label_name = label_text
+
+        if label_name not in ['healthy', 'unknown', 'background']:
+
+            cv2.rectangle(
+                img, left_top, right_bottom, bbox_color, thickness=thickness)
+            if len(bbox) > 4:
+                label_text += f'|{bbox[-1]:.02f}'
+            cv2.putText(img, label_text, (bbox_int[0], bbox_int[1] + 4),
+                        cv2.FONT_HERSHEY_COMPLEX, font_scale, text_color)
+
+        if bbox[-1]>=0.5:
+            object_list.append([label_name, bbox_int[0], bbox_int[1], bbox_int[2], bbox_int[3], bbox[-1]])
 
     if show:
         imshow(img, win_name, wait_time)
     if out_file is not None:
         imwrite(img, out_file)
+        # xml_file = str(out_file)
+        # xml_file = xml_file.split('/')[-1].replace('.png', '.xml')
+        # xml_file_path = '/home/multiai3/Jiuqing/OA-MIL-plants/data/GWHD/labels/unlabeled_xml/'+xml_file
+        generate_xml_3(object_list, xml_file_path, 'update_1')
+        pass
     return img
