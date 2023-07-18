@@ -4,7 +4,7 @@
 
 * The manuscript is currently under peer review. We submitted it to Frontiers in Plant Science.
 * Authors: Jiuqing Dong, Alvaro Fuentes, Sook Yoon*, Hyongsuk Kim*, Dong Sun Park
-* We will release our code as soon as possible for further research by interested researchers.
+* We will release the code and complete this documentation as soon as possible.
 
 
 ### Installation
@@ -30,7 +30,7 @@ pip install -e .
 
 * Generate noisy annotations:
 
-We will optimize our code as soon as possible.
+We will optimize our code and complete this documentation as soon as possible.
 
 
 ## How to use this code for a customer dataset?
