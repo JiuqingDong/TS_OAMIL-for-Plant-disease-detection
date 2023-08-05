@@ -32,7 +32,7 @@
 
   There are two version noise you can choose, random noise and real world noise(default gamma is 0.15).
 
-### dataset prepair
+### Dataset prepare
 
   You can download the GWHD2021 dataset from this link: https://zenodo.org/record/5092309
 
@@ -71,9 +71,3 @@ Important notes for adding the Control class:
 After adding a class, you need to modify the annotation files for train, val, and test sets. Inconsistent classes between training, testing, and validation can cause errors.
 When generating the PKL file, modify ./utils/coco_dataset.py to adjust the classes.
 The number of classes in mmdet.datasets.samples.coco.py and customer.py also needs to be adjusted.
-
-
-
-
-
-
